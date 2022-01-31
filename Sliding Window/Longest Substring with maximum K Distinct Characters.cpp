@@ -13,6 +13,8 @@ class LongestSubstringKDistinct {
  public:
   static int findLength(const string& str, int k) {
     int maxLength = 0;
+    int windowStart = 0;
+
     
     return maxLength;
   }
