@@ -14,6 +14,12 @@ class LongestSubstringKDistinct {
   static int findLength(const string& str, int k) {
     int maxLength = 0;
     int windowStart = 0;
+    unordered_map<char, int> charFreqMap;
+
+    for (int windowEnd = 0; windowEnd < str.size(); windowEnd++) {
+        char rightChar = str[windowEnd];
+        charFreqMap[rightChar] += 1;
+    }
 
     
     return maxLength;
