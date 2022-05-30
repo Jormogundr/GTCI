@@ -1,5 +1,7 @@
 /*
-Given a string, find the length of the longest substring in it with no more than K distinct characters.
+Given a string, find the length of the longest substring, which has all distinct characters.
+
+Incomplete
 */
 
 using namespace std;
@@ -7,46 +9,45 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include<vector>
+#include <vector>
 
-class LongestSubstringKDistinct {
+class NoRepeatSubstring {
  public:
-  static int findLength(const string& str, int k) {
-    int maxLength = 0;
+  static int findLength(const string& str) {
+    int maxLength = 0; 
+    int currLength = 0;
     int windowStart = 0;
-    unordered_map<char, int> charFreqMap; // use hashmap to map chars in the string (keys) to number frequency (value)
+    unordered_map<char, int> charFreqMap;
 
     for (int windowEnd = 0; windowEnd < str.size(); windowEnd++) {
         char rightChar = str[windowEnd];
-        charFreqMap[rightChar]++; // slide window to right
+        charFreqMap[rightChar]++;
 
-        while (charFreqMap.size() > k) {
-            char leftChar = str[windowStart]; // slide window to left
+        // while the char already exists in the map, slide the window in from the left, holding the right edge fixed
+        while (charFreqMap[rightChar]) {
+            char leftChar = str[windowStart];
             charFreqMap[leftChar]--;
-
-            if (charFreqMap[leftChar] < 1) { // remove leftChar from hashmap if it is no longer in the sliding window
+            if (charFreqMap[leftChar] < 1) {
                 charFreqMap.erase(leftChar);
             }
-            windowStart++;
         }
-        maxLength = max(maxLength, windowEnd - windowStart + 1); // the new max length is either the previously determined max length or the size of the new window
+
+        maxLength = max(maxLength, windowStart - windowEnd + 1);
     }
     return maxLength;
   }
 };
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////  DO NOT INCLUDE BELOW IN SUBMISISON     ////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void testCases() {
-    vector<string> case_arrs {"araaci", "araaci","cbbebi","cbbebi"};
-    vector<int> k {2,1,3,10};
-    vector<int> output {4,2,5,6};
+    vector<string> case_arrs {"aabccbb", "abbbb","abccde"};
+    vector<int> output {3,2,3};
 
     for (int i = 0; i < case_arrs.size(); i++) {
-        int solve = LongestSubstringKDistinct().findLength(case_arrs[i], k[i]);
+        int solve = NoRepeatSubstring().findLength(case_arrs[i]);
         if (solve == output[i]) {
             cout << "Success for " << solve << " == " << output[i] << endl;
         }
